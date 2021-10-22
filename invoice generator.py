@@ -55,13 +55,13 @@ amount = Sum + gst
 
 #printing recipt
 print("             INVOICE")
-print("Name :",name)
-print("Date :",date)
-print("GST (%):",GST)
-print("GST Amount:",gst)
-print("Original price without GST(tax):",Sum)
-print("The Net Amount To Be Paid is:",amount)
-print("The total number of item purchase :",total_items)
+print("Name : ",name)
+print("Date : ",date)
+print("GST (%): ",GST)
+print("GST Amount: ",gst)
+print("Original price without GST(tax): ",Sum)
+print("The Net Amount To Be Paid is: ",amount)
+print("The total number of item purchase : ",total_items)
 
 #printing INVOICE/BILL using prettytable module
 print('-'*40,'INVOICE','-'*40)
@@ -73,6 +73,6 @@ invoice.add_rows([
 print(invoice)
 print('-'*85)
 print("      Thanks for shopping with us !!!")
-print("   visit us again , have a great day !!!")
+print("   Visit us again , have a great day😊 !!!")
 
 
