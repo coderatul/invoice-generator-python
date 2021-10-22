@@ -1,5 +1,5 @@
-# invoice-generator-python
- - a simple python program to print invoice.
+# Invoice-generator-python
+ - A simple python program to print invoice.
  # Modules used -
  - pyfiglet : The ASCII text can be used to display many stylish texts by using the module pyfiglet. ![coderatul pyfiglet git main commit ](https://user-images.githubusercontent.com/72141859/116881225-fcfef480-abf0-11eb-92af-55bdf8825d1b.png)
 
