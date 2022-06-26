@@ -7,16 +7,16 @@
 print("Author : Atul kushwaha")      
 #importing pyfiglet module for bill header / ASCII ART
 import pyfiglet
-txt = pyfiglet.figlet_format("karthu")#here store name is karthu
-print(txt)
+print(pyfiglet.figlet_format("karthu"))#here store name is karthu
 
 #importing datetime module for time and date
 import datetime
 date = datetime.datetime.now()
 
 #getting name of customer
-name = input("Name of Customer : ")
-assert name.isalpha()#checking whethe input is alphabet or not 
+name = input("Name of Customer: ")
+while type(name) != str or name.isalpha() != True:
+    name = input("Please re-enter customer's name without any spaces: ") # Checks to see if the name is valid
 
 #printing menu using prettytable module
 print('-'*40,'Menu','-'*40)
@@ -41,7 +41,11 @@ print(" ##IF YOU WANT AN ITEM WHOSE QUANTITY IS (n) ENTER IT'S PRICE (n) TIMES##
 Sum = 0
 total_items = 0
 while(True):
-    userinput = int(input("Enter the price: "))
+    userinput = input("Enter the price: ")
+    while type(userinput) != str or userinput.isnumeric() != True:
+        userinput = input("Please re-enter a number: ")
+    userinput = int(userinput)
+
     if(userinput != 0):
         Sum = (Sum + userinput)
         total_items = total_items + 1
