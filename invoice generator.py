@@ -1,82 +1,109 @@
-############################################
-############################################
-############INVOICE GENERATOR ##############
-############################################
-############################################
-
-print("Author : Atul kushwaha")      
-#importing pyfiglet module for bill header / ASCII ART
+import sys
 import pyfiglet
-print(pyfiglet.figlet_format("karthu"))#here store name is karthu
+from datetime import date, datetime
+from prettytable import PrettyTable
 
-#importing datetime module for time and date
-import datetime
-date = datetime.datetime.now()
+#here store name is LOS POLLOS HERMANOS 
+print(pyfiglet.figlet_format("LOS POLLOS HERMANOS"))
+
+#you can add row-wise-details by editing Menu.txt file where elements are seperated by a comma "," 
+
+#printing Menu
+menu = PrettyTable(['S.no','Items','Cost'])
+with open("Menu.txt","r") as f:
+    rows =[]
+    for i in (f.read().split("\n")):
+        rows.append(i.split(","))
+try:
+    menu.add_rows(rows)
+except:
+    print("  ~ something is wrong with Menu.txt file ~ ")
+    print("""
+    - make sure you don't leave any empty line in the start or in between
+    - make sure all 3 elements of row are present and are seperated by a comma (,)
+    - make sure that only 3 elemets are present for a row as there are only 3 columns
+    - a ideal row in Menu.txt would look like -> 1, pizza, 169
+    """)
+    sys.exit()
+print('-'*19,'Menu','-'*19)
+print(menu)
+print('-'*44,"\n")
 
 #getting name of customer
-name = input("Name of Customer: ")
-while type(name) != str or name.isalpha() != True:
-    name = input("Please re-enter customer's name without any spaces: ") # Checks to see if the name is valid
+name = input("Name of Customer: ").title()
 
-#printing menu using prettytable module
-print('-'*40,'Menu','-'*40)
-from prettytable import PrettyTable
-menu = PrettyTable(['S.no','Items','Cost'])
-menu.add_rows([
-    ['1','Margherita','Rs.75/-'],
-    ['2','Double cheese Margherita','Rs.130/-'],
-    ['3','Pepper','Rs.175/-'],
-    ['4','Cheese & Barbeque Chicken','Rs.130/-'],
-    ['5','Veg Extravaganza','Rs.210/-'],
-    ['6','Meatza','Rs.245/-'],
-    ['7','Veg singles','Rs.170/-'],
-    ['8','Chochlate lava cake','Rs.160/-']
-])
-print(menu)
-print('-'*85)
-    
-#basic info about entering prices based on algoryth of this code
-print(" ##ENTER PRICE OF ITEM  AND ENTER ZER0 (0) TO QUIT##")
-print(" ##IF YOU WANT AN ITEM WHOSE QUANTITY IS (n) ENTER IT'S PRICE (n) TIMES## ")
-Sum = 0
-total_items = 0
+#basic info about entering prices based on flow of control of this project
+print("""
+ *_* enter slno. to add items or enter "q" to quit adding times *_*
+ *_* if you added something by mistake then enter quantity as 0 *_*
+""")
+#creating a dictionary to get product_name(value) and price(value) via Slno.(key)
+data = {}
+for j in rows:
+    data[j[0]] = list(j[1:])
+
+slno = 1
+total_quantity = 0
+amount = 0
+recipt = []
+# the above list_nested recipt would contain row-wise info for invoice
 while(True):
-    userinput = input("Enter the price: ")
-    while type(userinput) != str or userinput.isnumeric() != True:
-        userinput = input("Please re-enter a number: ")
-    userinput = int(userinput)
-
-    if(userinput != 0):
-        Sum = (Sum + userinput)
-        total_items = total_items + 1
+    item = input("enter the slno. of item you want to order: ").strip()
+    try:
+        data.get(item)[0]
+    except:
+        if item == "q":
+            pass
+        else:
+            print(f"~ slno.\"{item}\" not found, please check and enter again ~\n")
     else:
-       break
+        try:
+            quantity = int(input("enter quantity desired: "))
+            print("\n")
+        except:
+            raise TypeError("please enter an integer as quantity")
+        if quantity == 0:
+            slno -= 1
+        else:
+            recipt.append([slno,data.get(item)[0],quantity,data.get(item)[1],int(data.get(item)[1]) * quantity])
+            amount += int(data.get(item)[1]) * quantity
+            total_quantity += quantity
+        slno += 1
+    finally:
+        pass
+    if item == "q":
+        break
 
-#calculating GST(Goods Service Tax)
-GST = float(input("Enter the GST amount (%): "))
-gst = (Sum * GST) / 100
-amount = Sum + gst
+#calculating GST(Goods Service Tax) apllying GST as 5%
+GST = 5 
+gst = (amount * GST) / 100
+final_amount = amount + gst
+
+date = date.today().strftime("%d/%m/%y")
+time = datetime.now().strftime("%H:%M:%S")
+
 
 #printing recipt
-print("             INVOICE")
-print("Name : ",name)
-print("Date : ",date)
-print("GST (%): ",GST)
-print("GST Amount: ",gst)
-print("Original price without GST(tax): ",Sum)
-print("The Net Amount To Be Paid is: ",amount)
-print("The total number of item purchase : ",total_items)
+print(f"             INVOICE")
+print(f"Name : {name}")
+print(f"Date : {date}    Time: {time}")
+print(f"GST (%): {GST}")
+print(f"The Net Amount To Be Paid is: {final_amount}")
+print(f"The total number of item purchase : {total_quantity}")
 
 #printing INVOICE/BILL using prettytable module
-print('-'*40,'INVOICE','-'*40)
+print('-'*37,'INVOICE','-'*37)
 from prettytable import PrettyTable
-invoice = PrettyTable(['Name','date','Total items','Total Amount(Rs./-)'])
-invoice.add_rows([
-[name,date,total_items,amount]
-])
+invoice = PrettyTable(['slno','item','quantity','price of [1 u]nit','price of n units'])
+invoice.add_rows(recipt)
 print(invoice)
 print('-'*85)
 print("      Thanks for shopping with us !!!")
 print("   Visit us again , have a great day😊 !!!")
+
+
+
+
+
 
 
