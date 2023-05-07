@@ -1,0 +1,11 @@
+1, Margherita, 75
+2, Double cheese Margherita, 130
+3, Pepper, 175
+4, Cheese & Barbeque Chicken, 130
+5, Veg Extravaganza, 210
+6, Meatza, 245
+7, Veg singles, 170
+8, Chochlate lava cake, 160 
+9, mogumogu, 80
+10, coke, 50
+11, mazza ,25
