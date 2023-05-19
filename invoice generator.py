@@ -58,7 +58,14 @@ while(True):
             print(f"~ slno.\"{item}\" not found, please check and enter again ~\n")
     else:
         try:
-            quantity = int(input("enter quantity desired: "))
+            quantity = input("enter quantity desired(default = 1, to skip press enter): ")
+
+            if quantity == '':
+                quantity = 1
+
+            else: 
+                quantity = int(quantity)
+
             print("\n")
         except:
             raise TypeError("please enter an integer as quantity")
