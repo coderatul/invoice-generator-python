@@ -1,0 +1,45 @@
+name: Update Contributors
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  update-contributors:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update Contributors
+        run: |
+          # Extract the contributors from the merged PR
+          CONTRIBUTORS=$(git log --format="%aN" ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.merge_commit_sha }} | sort | uniq)
+          
+          # Generate the updated contributors section
+          CONTRIBUTORS_SECTION="## Contributors\n\n"
+          CONTRIBUTORS_SECTION+="| Contributor |\n"
+          CONTRIBUTORS_SECTION+="| ----------- |\n"
+          for contributor in $CONTRIBUTORS; do
+            CONTRIBUTORS_SECTION+="| $contributor |\n"
+          done
+          
+          # Replace the existing contributors section in the README
+          sed -i -e '/## Contributors/,/^$/c\'"$CONTRIBUTORS_SECTION" README.md
+          
+          # Commit and push the changes
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git commit -am "Update contributors [skip ci]"
+          git push
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update contributors section
+          branch: update-contributors
+          title: Update contributors section
+          body: This PR updates the contributors section in the README file.
