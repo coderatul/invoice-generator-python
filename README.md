@@ -1,6 +1,12 @@
 # Invoice-generator-python
 
- - A simple python program used to print invoices. 
+ - A simple python program used to print invoices with some features:
+   - user can update menu using text file
+   - now quantity againts products are shown
+   - serial numbers are used to indenity products
+   - automatic calculation
+   - nice output
+   - intuitive procedure
 ___
 ## Dependencies
 
